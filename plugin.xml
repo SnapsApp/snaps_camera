@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:rim="http://www.blackberry.com/ns/widgets"
+  id="com.makesnaps.snaps-camera" 
+  version="0.0.1">
+
+  <name>SnapsCamera</name>
+  <description>PhoneGap plugin for half-screen camera overlay</description>
+  <author>Snaps</author>
+
+  <info>
+    Snaps camera.
+  </info>
+
+  <js-module src="www/js/snaps_camera.js" name="SnapsCamera">
+    <clobbers target="navigator.SnapsCamera" />
+  </js-module>
+
+  <engines>
+    <engine name="cordova" version=">=3.1.0" />
+  </engines>
+
+  <platform name="ios">
+    <!-- config file -->
+    <config-file target="config.xml" parent="/*">
+      <feature name="SnapsCamera">
+        <param name="ios-package" value="SnapsCamera" />
+      </feature>
+    </config-file>
+
+    <!-- core SnapsCamera header and source files -->
+    <header-file src="platforms/ios/SnapsCamera/Classes/SnapsCamera.h" />
+    <source-file src="platforms/ios/SnapsCamera/Classes/SnapsCamera.m" />
+    <header-file src="platforms/ios/SnapsCamera/Classes/SnapsCameraView.h" />
+    <source-file src="platforms/ios/SnapsCamera/Classes/SnapsCameraView.m" />
+    <source-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.h" />
+    <source-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.m" />
+  </platform>
+</plugin>

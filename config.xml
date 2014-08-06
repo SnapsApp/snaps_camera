@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.makesnaps.snaps-camera" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>SnapsCamera</name>
+    <description>
+        Snaps Camera Plugin.
+    </description>
+    <author email="dev@snapsapp.com" href="http://makesnaps.com">
+        Snaps Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <feature name="SnapsCamera">
+        <param name="ios-package" value="SnapsCamera" />
+    </feature>
+</widget>

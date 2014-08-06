@@ -1,0 +1,6 @@
+*.swp
+*.swo
+*.swn
+.tmp
+.bundle
+.DS_Store
