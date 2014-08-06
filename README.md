@@ -1,10 +1,8 @@
-# [SnapsCamera](https://makesnaps.com)
+### [SnapsCamera](https://makesnaps.com)
 
+PhoneGap plugin for half-screen camera that mimics [Taptalk](https://www.taptalk.me/)-like interface.
 
-### SnapsCamera - PhoneGap plugin for half-screen camera
-
-Mimics [Taptalk](https://www.taptalk.me/)-like interface. Currently only supports iOS.
-
+Currently only supports iOS.
 
 ### License
 
