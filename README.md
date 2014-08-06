@@ -1,6 +1,8 @@
 ### [SnapsCamera](https://makesnaps.com)
 
-PhoneGap plugin for half-screen camera that mimics [Taptalk](https://www.taptalk.me/)-like interface.
+PhoneGap / Cordova plugin for half-screen camera that mimics [Taptalk](https://www.taptalk.me/)-like interface.
+
+Inspired by this excellent [article](http://codrspace.com/vote539/writing-a-custom-camera-plugin-for-phonegap/) on writing a custom camera plugin for PhoneGap.
 
 Currently only supports iOS.
 
