@@ -27,7 +27,6 @@
     if (self) {
         self._picker = [[UIImagePickerController alloc] init];
         
-        // Configure the UIImagePickerController instance
         self._picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         self._picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
         self._picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
@@ -62,7 +61,26 @@
     [self._picker takePicture];
 }
 
--(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)openGallery:(id)sender
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    
+    [self.plugin.viewController presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)switchCameras:(id)sender
+{
+    if (self._picker.cameraDevice == UIImagePickerControllerCameraDeviceRear) {
+        self._picker.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+    } else {
+        self._picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+    }
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
@@ -76,6 +94,11 @@
     
     // Tell the plugin class that we're finished processing the image
     [self.plugin capturedImageWithPath:imagePath];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self.plugin.viewController dismissViewControllerAnimated:YES completion:^{ }];
 }
 
 @end
