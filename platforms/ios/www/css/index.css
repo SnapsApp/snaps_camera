@@ -82,8 +82,15 @@ body {
 #openSnapsCameraBtn {
   position: fixed;
   display: block;
-  left: 0;
+  left: 1em;
   bottom: 1em;
   margin: 0 auto;
 }
 
+#closeSnapsCameraBtn {
+  position: fixed;
+  display: block;
+  right: 1em;
+  bottom: 1em;
+  margin: 0 auto;
+}

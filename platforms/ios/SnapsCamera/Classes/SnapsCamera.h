@@ -12,8 +12,10 @@
 
 @interface SnapsCamera : CDVPlugin
 
--(void) openCamera:(CDVInvokedUrlCommand*)command;
--(void) capturedImageWithPath:(NSString*)imagePath;
+- (void)openCamera:(CDVInvokedUrlCommand*)command;
+- (void)closeCamera:(CDVInvokedUrlCommand*)command;
+
+- (void)capturedImageWithPath:(NSString*)imagePath;
 
 @property (strong, nonatomic) SnapsCameraView *view;
 @property (strong, nonatomic) CDVInvokedUrlCommand *latestCommand;

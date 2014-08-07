@@ -31,6 +31,7 @@
     <div class="app">
       <img id="photoImg" />
       <button id="openSnapsCameraBtn">Open Snaps Camera</button>
+      <button id="closeSnapsCameraBtn">Close Snaps Camera</button>
     </div>
 
     <div id="scripts">
@@ -41,13 +42,22 @@
       </script>
       <script src="js/snaps_camera.js"></script>
       <script>
-        document.getElementById("openSnapsCameraBtn").addEventListener("click", function() {
-          SnapsCamera.getPicture(function (imagePath) {
+        document.getElementById("openSnapsCameraBtn").addEventListener("click", function () {
+          SnapsCamera.openCamera(function (imagePath) {
             document.getElementById("photoImg").setAttribute("src", imagePath)
           }, function () {
             alert("Photo cancelled")
           })
         }, false)
+
+        document.getElementById("closeSnapsCameraBtn").addEventListener("click", function () {
+          SnapsCamera.closeCamera(function () {
+            console.log("camera closed")
+          }, function (err) {
+            console.log("error closing camera", err)
+          })
+        }, false)
+
       </script>
     </div>
   </body>
