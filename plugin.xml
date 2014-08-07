@@ -34,7 +34,7 @@
     <source-file src="platforms/ios/SnapsCamera/Classes/SnapsCamera.m" />
     <header-file src="platforms/ios/SnapsCamera/Classes/SnapsCameraView.h" />
     <source-file src="platforms/ios/SnapsCamera/Classes/SnapsCameraView.m" />
-    <source-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.h" />
+    <header-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.h" />
     <source-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.m" />
   </platform>
 </plugin>
