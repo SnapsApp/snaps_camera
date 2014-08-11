@@ -31,4 +31,6 @@
     <feature name="SnapsCamera">
         <param name="ios-package" value="SnapsCamera" />
     </feature>
+    <preference name="fullscreen" value="true" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
 </widget>
