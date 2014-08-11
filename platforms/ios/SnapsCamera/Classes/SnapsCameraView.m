@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) UIView *_overlay;
 @property (nonatomic, strong) UIImagePickerController *_picker;
+@property (nonatomic) NSInteger _offset;
 
 @end
 
@@ -26,6 +27,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self._offset = 0;
         self._picker = [[UIImagePickerController alloc] init];
         
         self._picker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -89,10 +91,10 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filename = @"test.jpg";
+    NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", self._offset];
     NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:filename];
     
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
     [imageData writeToFile:imagePath atomically:YES];
     
     // Tell the plugin class that we're finished processing the image
