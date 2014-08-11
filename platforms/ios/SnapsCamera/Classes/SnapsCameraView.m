@@ -91,7 +91,7 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", self._offset];
+    NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", self._offset++];
     NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
