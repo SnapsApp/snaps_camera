@@ -9,6 +9,7 @@
 #import "SnapsCameraView.h"
 #import "SnapsCamera.h"
 #import "SNCameraButton.h"
+#import "UIImage+Resize.h"
 
 #define IS_IPHONE_5  (([[UIScreen mainScreen] bounds].size.height >= 568) ? YES : NO)
 
@@ -39,6 +40,7 @@
         CGRect frame = CGRectMake(0, 0, screenFrame.size.width, screenFrame.size.height / 2);
         self.frame = frame;
         self._picker.view.frame = frame;
+        NSLog(@"%f, %f", frame.size.width, frame.size.height);
         
         self._overlay = [[UIView alloc] initWithFrame:frame];
         
@@ -83,6 +85,7 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    image = [image imageByScalingAndCroppingForSize:self.frame.size];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];

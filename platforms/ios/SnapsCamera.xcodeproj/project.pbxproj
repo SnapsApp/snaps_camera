@@ -29,6 +29,7 @@
 		3D2FD25D1992BAEF00C61BFA /* SnapsCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD25C1992BAEF00C61BFA /* SnapsCamera.m */; };
 		3D2FD2601992BC0F00C61BFA /* SnapsCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD25F1992BC0F00C61BFA /* SnapsCameraView.m */; };
 		3D2FD2631992C3E800C61BFA /* SNCameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD2621992C3E800C61BFA /* SNCameraButton.m */; };
+		3D9A32E219992D690038FACB /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9A32E119992D690038FACB /* UIImage+Resize.m */; };
 		5AEE5B35173C68D80009041E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEE5B34173C68D80009041E /* CoreLocation.framework */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
 		7E7966DE1810823500FA85AD /* icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966D41810823500FA85AD /* icon-40.png */; };
@@ -94,6 +95,8 @@
 		3D2FD25F1992BC0F00C61BFA /* SnapsCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnapsCameraView.m; sourceTree = "<group>"; };
 		3D2FD2611992C3E800C61BFA /* SNCameraButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNCameraButton.h; sourceTree = "<group>"; };
 		3D2FD2621992C3E800C61BFA /* SNCameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCameraButton.m; sourceTree = "<group>"; };
+		3D9A32E019992D690038FACB /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		3D9A32E119992D690038FACB /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		5AEE5B34173C68D80009041E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		7E7966D41810823500FA85AD /* icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40.png"; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 				302D95F014D2391D003F00A1 /* MainViewController.xib */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
+				3D9A32E019992D690038FACB /* UIImage+Resize.h */,
+				3D9A32E119992D690038FACB /* UIImage+Resize.m */,
 			);
 			name = Classes;
 			path = SnapsCamera/Classes;
@@ -435,6 +440,7 @@
 				3D2FD25D1992BAEF00C61BFA /* SnapsCamera.m in Sources */,
 				3D2FD2601992BC0F00C61BFA /* SnapsCameraView.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
+				3D9A32E219992D690038FACB /* UIImage+Resize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
