@@ -36,5 +36,7 @@
     <source-file src="platforms/ios/SnapsCamera/Classes/SnapsCameraView.m" />
     <header-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.h" />
     <source-file src="platforms/ios/SnapsCamera/Classes/SNCameraButton.m" />
+    <header-file src="platforms/ios/SnapsCamera/Classes/UIImage+Resize.h" />
+    <source-file src="platforms/ios/SnapsCamera/Classes/UIImage+Resize.m" />
   </platform>
 </plugin>
