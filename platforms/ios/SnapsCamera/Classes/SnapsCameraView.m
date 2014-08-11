@@ -17,7 +17,6 @@
 
 @property (nonatomic, strong) UIView *_overlay;
 @property (nonatomic, strong) UIImagePickerController *_picker;
-@property (nonatomic) NSInteger _offset;
 
 @end
 
@@ -27,7 +26,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self._offset = 0;
         self._picker = [[UIImagePickerController alloc] init];
         
         self._picker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -91,7 +89,8 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", self._offset++];
+    long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
+    NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", currentTime];
     NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:filename];
     
     NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
