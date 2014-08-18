@@ -12,6 +12,8 @@
 
 @interface SnapsCameraView : UIView
 
+- (void)addSticker:(NSString*)sticker;
+
 @property (strong, nonatomic) SnapsCamera *plugin;
 
 @end

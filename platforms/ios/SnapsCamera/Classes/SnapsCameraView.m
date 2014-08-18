@@ -58,6 +58,12 @@
     return self;
 }
 
+- (void)addSticker:(NSString*)sticker
+{
+    // TODO
+    NSLog(@"addSticker: %@", sticker);
+}
+
 - (void)takePhoto:(id)sender
 {
     [self._picker takePicture];
