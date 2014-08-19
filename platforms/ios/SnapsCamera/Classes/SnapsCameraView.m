@@ -149,6 +149,7 @@
 {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image imageByScalingAndCroppingForSize:self.frame.size];
+    [self selectSticker:nil];
     
     CGImageRef imageRef = image.CGImage;
     
@@ -165,11 +166,19 @@
     
     CGContextDrawImage(bitmap, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
     
+    NSLog(@"%f vs %f", image.size.height, self.frame.size.height);
+    
     for (SNStickerView *sticker in self._stickers) {
         CGContextSaveGState(bitmap);
         
-        CGContextConcatCTM(bitmap, sticker.transform);
-        CGContextDrawImage(bitmap, sticker.frame, sticker.image.CGImage);
+        // TODO: fix transform issues
+//        CGContextConcatCTM(bitmap, sticker.transform);
+//        CGContextDrawImage(bitmap, sticker.frame, sticker.image.CGImage);
+        
+        CGContextTranslateCTM(bitmap, sticker.frame.origin.x, sticker.frame.origin.y);
+        CGContextScaleCTM(bitmap, 1, -1);
+        CGContextConcatCTM(bitmap, [[sticker layer] affineTransform]);
+        [[sticker layer] renderInContext:bitmap];
         
         CGContextRestoreGState(bitmap);
     }
