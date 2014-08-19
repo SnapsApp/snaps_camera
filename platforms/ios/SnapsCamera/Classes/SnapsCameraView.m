@@ -87,10 +87,10 @@
             iv.frame = CGRectMake(0, 0, w, image.size.height * w / image.size.width);
             iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
             
-            weakSelf._selected = iv;
-    
             [weakSelf._stickers addObject:iv];
             [weakSelf addSubview:iv];
+            
+            [weakSelf selectSticker:iv];
         });
     });
 }
