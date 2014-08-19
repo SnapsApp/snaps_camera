@@ -47,7 +47,6 @@
         CGRect frame = CGRectMake(0, 0, screenFrame.size.width, screenFrame.size.height / 2);
         self.frame = frame;
         self._picker.view.frame = frame;
-        NSLog(@"%f, %f", frame.size.width, frame.size.height);
         
         self._overlay = [[UIView alloc] initWithFrame:frame];
         
@@ -158,9 +157,12 @@
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    image = [image imageByScalingAndCroppingForSize:self.frame.size];
     [self selectSticker:nil];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    image = [image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
+    CGFloat horizRatio = image.size.width / self.frame.size.width;
+    CGFloat vertRatio = image.size.height / self.frame.size.height;
     
     CGImageRef imageRef = image.CGImage;
     
@@ -184,7 +186,7 @@
 //        CGContextConcatCTM(bitmap, sticker.transform);
 //        CGContextDrawImage(bitmap, sticker.frame, sticker.image.CGImage);
         
-        CGContextTranslateCTM(bitmap, sticker.frame.origin.x, sticker.frame.origin.y);
+        CGContextTranslateCTM(bitmap, sticker.frame.origin.x * horizRatio, sticker.frame.origin.y * vertRatio);
         CGContextScaleCTM(bitmap, 1, -1);
         CGContextConcatCTM(bitmap, [[sticker layer] affineTransform]);
         [[sticker layer] renderInContext:bitmap];

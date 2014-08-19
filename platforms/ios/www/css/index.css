@@ -75,6 +75,7 @@ body {
   left: 0;
   bottom: 0;
   width: 100%;
+  max-width: 100%;
   max-height: 50%;
 }
 
@@ -96,6 +97,6 @@ body {
   position: fixed;
   display: block;
   left: 1em;
-  bottom: 3em;
+  bottom: 4em;
 }
 
