@@ -74,6 +74,10 @@
     
     __unsafe_unretained SnapsCameraView *weakSelf = self;
     
+    
+    // TODO: use SDWebImageManager for caching
+    
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:sticker]];
         UIImage *image = [UIImage imageWithData:imageData];
