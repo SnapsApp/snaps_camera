@@ -83,7 +83,6 @@ body {
   display: block;
   left: 1em;
   bottom: 1em;
-  margin: 0 auto;
 }
 
 #closeSnapsCameraBtn {
@@ -91,5 +90,12 @@ body {
   display: block;
   right: 1em;
   bottom: 1em;
-  margin: 0 auto;
 }
+
+#addStickerBtn {
+  position: fixed;
+  display: block;
+  left: 1em;
+  bottom: 4em;
+}
+

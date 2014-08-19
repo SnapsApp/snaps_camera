@@ -9,14 +9,19 @@
 #import "SnapsCameraView.h"
 #import "SnapsCamera.h"
 #import "SNCameraButton.h"
+#import "SNStickerView.h"
 #import "UIImage+Resize.h"
 
 #define IS_IPHONE_5  (([[UIScreen mainScreen] bounds].size.height >= 568) ? YES : NO)
 
-@interface SnapsCameraView () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface SnapsCameraView () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, SNStickerViewDelegate>
 
 @property (nonatomic, strong) UIView *_overlay;
 @property (nonatomic, strong) UIImagePickerController *_picker;
+
+@property (nonatomic, strong) NSMutableArray *_stickers;
+
+@property (nonatomic, strong) SNStickerView *_selected;
 
 @end
 
@@ -26,6 +31,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self._stickers = [[NSMutableArray alloc] init];
+        
         self._picker = [[UIImagePickerController alloc] init];
         
         self._picker.sourceType = UIImagePickerControllerSourceTypeCamera;
@@ -53,6 +60,9 @@
         self._picker.cameraOverlayView = self._overlay;
         
         [self addSubview:self._picker.view];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        [self._overlay addGestureRecognizer:tap];
     }
     
     return self;
@@ -60,8 +70,55 @@
 
 - (void)addSticker:(NSString*)sticker
 {
-    // TODO
     NSLog(@"addSticker: %@", sticker);
+    
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:sticker]];
+    UIImage *image = [UIImage imageWithData:imageData];
+    SNStickerView *iv = [[SNStickerView alloc] initWithImage:image];
+    iv.delegate = self;
+    iv.contentMode = UIViewContentModeScaleAspectFit;
+    CGFloat W = self.bounds.size.width;
+    CGFloat w = W / 4;
+    iv.frame = CGRectMake(0, 0, w, image.size.height * w / image.size.width);
+    iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
+    
+    self._selected = iv;
+    
+    [self._stickers addObject:iv];
+    [self addSubview:iv];
+}
+
+- (void)removeSticker:(SNStickerView*)sticker
+{
+    [sticker removeFromSuperview];
+    [self._stickers removeObject:sticker];
+    
+    if (self._selected == sticker) {
+        [self selectSticker:nil];
+    }
+}
+
+- (void)selectSticker:(SNStickerView*)sticker
+{
+    self._selected = sticker;
+    
+    if (self._selected) {
+        [self bringSubviewToFront:self._selected];
+    }
+    
+    for (SNStickerView *sticker in self._stickers) {
+        [sticker setNeedsDisplay];
+    }
+}
+
+- (BOOL)isSelectedSticker:(SNStickerView*)sticker
+{
+    return (sticker == self._selected);
+}
+
+- (void)handleTap:(UITapGestureRecognizer*)recognizer
+{
+    [self selectSticker:nil];
 }
 
 - (void)takePhoto:(id)sender
@@ -92,6 +149,38 @@
 {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     image = [image imageByScalingAndCroppingForSize:self.frame.size];
+    
+    CGImageRef imageRef = image.CGImage;
+    
+    // Build a context that's the same dimensions as the new size
+    CGContextRef bitmap = CGBitmapContextCreate(NULL,
+                                                image.size.width,
+                                                image.size.height,
+                                                CGImageGetBitsPerComponent(imageRef),
+                                                0,
+                                                CGImageGetColorSpace(imageRef),
+                                                CGImageGetBitmapInfo(imageRef));
+    
+    CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh);
+    
+    CGContextDrawImage(bitmap, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
+    
+    for (SNStickerView *sticker in self._stickers) {
+        CGContextSaveGState(bitmap);
+        
+        CGContextConcatCTM(bitmap, sticker.transform);
+        CGContextDrawImage(bitmap, sticker.frame, sticker.image.CGImage);
+        
+        CGContextRestoreGState(bitmap);
+    }
+    
+    // Get the resized image from the context and a UIImage
+    CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
+    image = [UIImage imageWithCGImage:newImageRef];
+    
+    // Clean up
+    CGContextRelease(bitmap);
+    CGImageRelease(newImageRef);
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];

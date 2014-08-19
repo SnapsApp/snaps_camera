@@ -30,6 +30,9 @@
 		3D2FD2601992BC0F00C61BFA /* SnapsCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD25F1992BC0F00C61BFA /* SnapsCameraView.m */; };
 		3D2FD2631992C3E800C61BFA /* SNCameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD2621992C3E800C61BFA /* SNCameraButton.m */; };
 		3D9A32E219992D690038FACB /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9A32E119992D690038FACB /* UIImage+Resize.m */; };
+		3DBF1CB619A2F82000804E57 /* SNStickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF1CB519A2F82000804E57 /* SNStickerView.m */; };
+		3DBF1CB919A2FCCA00804E57 /* icon.close.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF1CB819A2FCCA00804E57 /* icon.close.png */; };
+		3DBF1CC019A3004B00804E57 /* UIButton+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF1CBF19A3004B00804E57 /* UIButton+Snaps.m */; };
 		5AEE5B35173C68D80009041E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEE5B34173C68D80009041E /* CoreLocation.framework */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
 		7E7966DE1810823500FA85AD /* icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966D41810823500FA85AD /* icon-40.png */; };
@@ -97,6 +100,11 @@
 		3D2FD2621992C3E800C61BFA /* SNCameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCameraButton.m; sourceTree = "<group>"; };
 		3D9A32E019992D690038FACB /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		3D9A32E119992D690038FACB /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		3DBF1CB419A2F82000804E57 /* SNStickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNStickerView.h; sourceTree = "<group>"; };
+		3DBF1CB519A2F82000804E57 /* SNStickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNStickerView.m; sourceTree = "<group>"; };
+		3DBF1CB819A2FCCA00804E57 /* icon.close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.close.png; path = SnapsCamera/Images/icon.close.png; sourceTree = SOURCE_ROOT; };
+		3DBF1CBE19A3004B00804E57 /* UIButton+Snaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Snaps.h"; sourceTree = "<group>"; };
+		3DBF1CBF19A3004B00804E57 /* UIButton+Snaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Snaps.m"; sourceTree = "<group>"; };
 		5AEE5B34173C68D80009041E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		7E7966D41810823500FA85AD /* icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40.png"; sourceTree = "<group>"; };
@@ -140,6 +148,8 @@
 				3D2FD25C1992BAEF00C61BFA /* SnapsCamera.m */,
 				3D2FD25E1992BC0F00C61BFA /* SnapsCameraView.h */,
 				3D2FD25F1992BC0F00C61BFA /* SnapsCameraView.m */,
+				3DBF1CB419A2F82000804E57 /* SNStickerView.h */,
+				3DBF1CB519A2F82000804E57 /* SNStickerView.m */,
 				3D2FD2611992C3E800C61BFA /* SNCameraButton.h */,
 				3D2FD2621992C3E800C61BFA /* SNCameraButton.m */,
 				302D95EE14D2391D003F00A1 /* MainViewController.h */,
@@ -149,6 +159,8 @@
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
 				3D9A32E019992D690038FACB /* UIImage+Resize.h */,
 				3D9A32E119992D690038FACB /* UIImage+Resize.m */,
+				3DBF1CBE19A3004B00804E57 /* UIButton+Snaps.h */,
+				3DBF1CBF19A3004B00804E57 /* UIButton+Snaps.m */,
 			);
 			name = Classes;
 			path = SnapsCamera/Classes;
@@ -186,6 +198,7 @@
 				EB87FDF21871DA7A0020F90C /* merges */,
 				EB87FDF11871DA420020F90C /* Staging */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
+				3DBF1CB719A2FCB300804E57 /* Images */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				307C750510C5A3420062BCA9 /* Plugins */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -299,6 +312,15 @@
 			path = se.lproj;
 			sourceTree = "<group>";
 		};
+		3DBF1CB719A2FCB300804E57 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				3DBF1CB819A2FCCA00804E57 /* icon.close.png */,
+			);
+			name = Images;
+			path = SnapsCamera/Classes;
+			sourceTree = "<group>";
+		};
 		EB87FDF11871DA420020F90C /* Staging */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +415,7 @@
 				7E7966E31810823500FA85AD /* icon-60@2x.png in Resources */,
 				30A0434814DC770100060A13 /* Localizable.strings in Resources */,
 				7E7966E61810823500FA85AD /* icon-small.png in Resources */,
+				3DBF1CB919A2FCCA00804E57 /* icon.close.png in Resources */,
 				3088BBBD154F3926009F9C59 /* Default-Landscape@2x~ipad.png in Resources */,
 				3088BBBE154F3926009F9C59 /* Default-Landscape~ipad.png in Resources */,
 				3088BBBF154F3926009F9C59 /* Default-Portrait@2x~ipad.png in Resources */,
@@ -435,8 +458,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				3DBF1CC019A3004B00804E57 /* UIButton+Snaps.m in Sources */,
 				3D2FD2631992C3E800C61BFA /* SNCameraButton.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
+				3DBF1CB619A2F82000804E57 /* SNStickerView.m in Sources */,
 				3D2FD25D1992BAEF00C61BFA /* SnapsCamera.m in Sources */,
 				3D2FD2601992BC0F00C61BFA /* SnapsCameraView.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,

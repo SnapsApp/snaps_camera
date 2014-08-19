@@ -32,6 +32,7 @@
       <img id="photoImg" />
       <button id="openSnapsCameraBtn">Open Snaps Camera</button>
       <button id="closeSnapsCameraBtn">Close Snaps Camera</button>
+      <button id="addStickerBtn">Add Sticker</button>
     </div>
 
     <div id="scripts">
@@ -40,6 +41,7 @@
       <script type="text/javascript">
         app.initialize()
       </script>
+
       <script src="js/snaps_camera.js"></script>
       <script>
         document.getElementById("openSnapsCameraBtn").addEventListener("click", function () {
@@ -58,6 +60,14 @@
           })
         }, false)
 
+        document.getElementById("addStickerBtn").addEventListener("click", function () {
+          var sticker = "https://stickers.snaps.photo/development/brands/Despicable%20Me/stickers/MainMinion.png"
+          SnapsCamera.addSticker(sticker, function () {
+            console.log("sticker added")
+          }, function (err) {
+            console.log("error adding sticker", err)
+          })
+        }, false)
       </script>
     </div>
   </body>
