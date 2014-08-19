@@ -72,20 +72,27 @@
 {
     NSLog(@"addSticker: %@", sticker);
     
-    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:sticker]];
-    UIImage *image = [UIImage imageWithData:imageData];
-    SNStickerView *iv = [[SNStickerView alloc] initWithImage:image];
-    iv.delegate = self;
-    iv.contentMode = UIViewContentModeScaleAspectFit;
-    CGFloat W = self.bounds.size.width;
-    CGFloat w = W / 4;
-    iv.frame = CGRectMake(0, 0, w, image.size.height * w / image.size.width);
-    iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
+    __unsafe_unretained SnapsCameraView *weakSelf = self;
     
-    self._selected = iv;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:sticker]];
+        UIImage *image = [UIImage imageWithData:imageData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            SNStickerView *iv = [[SNStickerView alloc] initWithImage:image];
+            iv.delegate = self;
+            iv.contentMode = UIViewContentModeScaleAspectFit;
+            CGFloat W = self.bounds.size.width;
+            CGFloat w = W / 4;
+            iv.frame = CGRectMake(0, 0, w, image.size.height * w / image.size.width);
+            iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
+            
+            weakSelf._selected = iv;
     
-    [self._stickers addObject:iv];
-    [self addSubview:iv];
+            [weakSelf._stickers addObject:iv];
+            [weakSelf addSubview:iv];
+        });
+    });
 }
 
 - (void)removeSticker:(SNStickerView*)sticker
@@ -165,8 +172,6 @@
     CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh);
     
     CGContextDrawImage(bitmap, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
-    
-    NSLog(@"%f vs %f", image.size.height, self.frame.size.height);
     
     for (SNStickerView *sticker in self._stickers) {
         CGContextSaveGState(bitmap);
