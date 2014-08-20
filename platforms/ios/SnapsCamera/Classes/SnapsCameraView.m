@@ -18,6 +18,8 @@
 @interface SnapsCameraView () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, SNStickerViewDelegate>
 
 @property (nonatomic, strong) UIView *_overlay;
+@property (nonatomic, strong) UIView *_stickersView;
+
 @property (nonatomic, strong) UIImagePickerController *_picker;
 
 @property (nonatomic, strong) NSMutableArray *_stickers;
@@ -46,10 +48,14 @@
         self.frame = frame;
         
         self._overlay = [[UIView alloc] initWithFrame:self.frame];
-        self._overlay.clipsToBounds = YES;
+        
+        self._stickersView = [[UIView alloc] initWithFrame:self.frame];
+        self._stickersView.clipsToBounds = YES;
+        self._stickersView.opaque = NO;
+        [self._overlay addSubview:self._stickersView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [self._overlay addGestureRecognizer:tap];
+        [self._stickersView addGestureRecognizer:tap];
         
         self.isCameraMode = YES;
     }
@@ -80,6 +86,8 @@
             
             self._picker.delegate = self;
             self._picker.view.frame = self.frame;
+            
+            [self._overlay bringSubviewToFront:self._stickersView];
             
             {
                 SNCameraButton *photoButton = [SNCameraButton new];
@@ -113,8 +121,8 @@
                 self._picker = nil;
             }
             
+            // TODO: imageview needs to display the resulting image
             UIImageView *iv = [[UIImageView alloc] initWithImage:self._image];
-            iv.contentMode = UIViewContentModeScaleAspectFill;
             iv.frame = self.frame;
             [self._overlay addSubview:iv];
             [self._overlaySubviews addObject:iv];
@@ -124,6 +132,8 @@
             for (SNStickerView *sticker in self._stickers) {
                 [self._overlay bringSubviewToFront:sticker];
             }
+            
+            [self._overlay bringSubviewToFront:self._stickersView];
             
             {
                 UIButton *button = [[UIButton alloc] init];
@@ -174,7 +184,7 @@
             iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
             
             [weakSelf._stickers addObject:iv];
-            [weakSelf._overlay addSubview:iv];
+            [weakSelf._stickersView addSubview:iv];
             
             [weakSelf selectSticker:iv];
         });
@@ -196,7 +206,7 @@
     self._selected = sticker;
     
     if (self._selected) {
-        [self bringSubviewToFront:self._selected];
+        [self._stickersView bringSubviewToFront:self._selected];
     }
     
     for (SNStickerView *sticker in self._stickers) {
@@ -217,10 +227,14 @@
 - (void)swapCamera:(id)sender
 {
     
+    // TODO
+    
 }
 
 - (void)toggleFlash:(id)sender
 {
+    
+    // TODO
     
 }
 
@@ -253,6 +267,7 @@
     [self selectSticker:nil];
     
     self._image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    self._image = [self._image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
     self.isCameraMode = NO;
 }
 
@@ -263,9 +278,9 @@
 
 - (void)onEditComplete:(id)sender
 {
-    UIImage *image = [self._image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
+    UIImage *image = self._image;
     CGFloat horizRatio = image.size.width / self.frame.size.width;
-    CGFloat vertRatio = image.size.height / self.frame.size.height;
+    CGFloat vertRatio  = image.size.height / self.frame.size.height;
     
     CGImageRef imageRef = image.CGImage;
     
