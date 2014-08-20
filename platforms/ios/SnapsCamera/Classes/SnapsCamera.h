@@ -14,8 +14,9 @@
 
 - (void)openCamera:(CDVInvokedUrlCommand*)command;
 - (void)closeCamera:(CDVInvokedUrlCommand*)command;
+- (void)hideCamera:(CDVInvokedUrlCommand*)command;
+- (void)showCamera:(CDVInvokedUrlCommand*)command;
 - (void)addSticker:(CDVInvokedUrlCommand*)command;
-- (void)reset:(CDVInvokedUrlCommand*)command;
 
 - (void)capturedImageWithPath:(NSString*)imagePath;
 

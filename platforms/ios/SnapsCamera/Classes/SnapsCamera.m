@@ -49,6 +49,24 @@
     }
 }
 
+- (void)hideCamera:(CDVInvokedUrlCommand*)command
+{
+    if (self.view) {
+        self.view.hidden = YES;
+    }
+    
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
+- (void)showCamera:(CDVInvokedUrlCommand*)command
+{
+    if (self.view) {
+        self.view.hidden = NO;
+    }
+    
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+}
+
 - (void)addSticker:(CDVInvokedUrlCommand*)command
 {
     if (self.hasPendingOperation) {
@@ -57,11 +75,6 @@
     } else {
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
     }
-}
-
-- (void)reset:(CDVInvokedUrlCommand*)command
-{
-    // TODO
 }
 
 - (void)capturedImageWithPath:(NSString*)imagePath
