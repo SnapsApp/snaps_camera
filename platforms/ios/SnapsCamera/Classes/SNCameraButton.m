@@ -27,7 +27,7 @@
     }
     
     CGContextSetLineWidth(context, self.bounds.size.width / 40.0);
-    CGContextFillEllipseInRect(context, CGRectInset(self.bounds, 6, 6));
+    CGContextFillEllipseInRect(context, CGRectInset(self.bounds, 5, 5));
     CGContextStrokeEllipseInRect(context, CGRectInset(self.bounds, 2, 2));
 }
 

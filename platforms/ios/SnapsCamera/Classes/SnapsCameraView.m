@@ -24,6 +24,12 @@
 
 @property (nonatomic, strong) SNStickerView *_selected;
 
+@property (nonatomic) BOOL isCameraMode;
+
+@property (nonatomic, strong) NSMutableArray *_overlaySubviews;
+
+@property (nonatomic, strong) UIImage *_image;
+
 @end
 
 @implementation SnapsCameraView
@@ -34,50 +40,114 @@
     if (self) {
         self._stickers = [[NSMutableArray alloc] init];
         
-        self._picker = [[UIImagePickerController alloc] init];
-        
-        self._picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self._picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-        self._picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-        self._picker.showsCameraControls = NO;
-        
-        self._picker.delegate = self;
-        
         // Set the frames to be half screen
         CGRect screenFrame = [[UIScreen mainScreen] bounds];
         CGRect frame = CGRectMake(0, 0, screenFrame.size.width, screenFrame.size.height / 2);
         self.frame = frame;
-        self._picker.view.frame = frame;
         
-        self._overlay = [[UIView alloc] initWithFrame:frame];
-        
-        SNCameraButton *photoButton = [SNCameraButton new];
-        CGFloat size = (IS_IPHONE_5 ? 60 : 45);
-        photoButton.frame = CGRectMake(0, 0, size, size);
-        photoButton.center = CGPointMake(frame.size.width / 2, frame.size.height - size / 2 - 8);
-        [photoButton addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchUpInside];
-        [self._overlay addSubview:photoButton];
-        
-//        UIButton *swap = [UIButton getButton:@"icon.swap"];
-//        [swap addTarget:self action:@selector(swapCamera:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:swap];
-//        
-//        UIButton *flash = [UIButton getButton:@"icon.flash"];
-//        [flash addTarget:self action:@selector(toggleFlash:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:flash];
-//        
-//        UIButton *gallery = [UIButton getButton:@"icon.gallery"];
-//        [gallery addTarget:self action:@selector(openGallery:) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:gallery];
-
-        self._picker.cameraOverlayView = self._overlay;
-        [self addSubview:self._picker.view];
+        self._overlay = [[UIView alloc] initWithFrame:self.frame];
+        self._overlay.clipsToBounds = YES;
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self._overlay addGestureRecognizer:tap];
+        
+        self.isCameraMode = YES;
     }
     
     return self;
+}
+
+- (void)setIsCameraMode:(BOOL)isCameraMode
+{
+    if (_isCameraMode != isCameraMode || !self._overlaySubviews) {
+        _isCameraMode = isCameraMode;
+        
+        if (self._overlaySubviews) {
+            for (UIView *view in self._overlaySubviews) {
+                [view removeFromSuperview];
+            }
+        }
+        
+        self._overlaySubviews = [NSMutableArray new];
+        
+        if (isCameraMode) {
+            self._picker = [[UIImagePickerController alloc] init];
+            
+            self._picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            self._picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            self._picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            self._picker.showsCameraControls = NO;
+            
+            self._picker.delegate = self;
+            self._picker.view.frame = self.frame;
+            
+            {
+                SNCameraButton *photoButton = [SNCameraButton new];
+                CGFloat size = (IS_IPHONE_5 ? 48 : 32);
+                photoButton.frame = CGRectMake(0, 0, size, size);
+                photoButton.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height - size / 2 - 8);
+                [photoButton addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchUpInside];
+                [self._overlay addSubview:photoButton];
+                [self._overlaySubviews addObject:photoButton];
+            }
+            
+            //        UIButton *swap = [UIButton getButton:@"icon.swap"];
+            //        [swap addTarget:self action:@selector(swapCamera:) forControlEvents:UIControlEventTouchUpInside];
+            //        [self addSubview:swap];
+            //
+            //        UIButton *flash = [UIButton getButton:@"icon.flash"];
+            //        [flash addTarget:self action:@selector(toggleFlash:) forControlEvents:UIControlEventTouchUpInside];
+            //        [self addSubview:flash];
+            //
+            //        UIButton *gallery = [UIButton getButton:@"icon.gallery"];
+            //        [gallery addTarget:self action:@selector(openGallery:) forControlEvents:UIControlEventTouchUpInside];
+            //        [self addSubview:gallery];
+            
+            self._picker.cameraOverlayView = self._overlay;
+            [self addSubview:self._picker.view];
+        } else {
+            if (self._picker) {
+                [self._picker.view removeFromSuperview];
+                [self._overlay removeFromSuperview];
+                self._picker.cameraOverlayView = nil;
+                self._picker = nil;
+            }
+            
+            UIImageView *iv = [[UIImageView alloc] initWithImage:self._image];
+            iv.contentMode = UIViewContentModeScaleAspectFill;
+            iv.frame = self.frame;
+            [self._overlay addSubview:iv];
+            [self._overlaySubviews addObject:iv];
+            
+            CGFloat pad = 16;
+            
+            for (SNStickerView *sticker in self._stickers) {
+                [self._overlay bringSubviewToFront:sticker];
+            }
+            
+            {
+                UIButton *button = [[UIButton alloc] init];
+                [button setTitle:@"Cancel" forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(onEditCancel:) forControlEvents:UIControlEventTouchUpInside];
+                [button sizeToFit];
+                button.frame = CGRectMake(pad, pad, button.bounds.size.width, button.bounds.size.height);
+                [self._overlay addSubview:button];
+                [self._overlaySubviews addObject:button];
+            }
+            
+            {
+                UIButton *button = [[UIButton alloc] init];
+                [button setTitle:@"Done" forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(onEditComplete:) forControlEvents:UIControlEventTouchUpInside];
+                [button sizeToFit];
+                button.frame = CGRectMake(self.bounds.size.width - button.bounds.size.width - pad, pad, button.bounds.size.width, button.bounds.size.height);
+                [self._overlay addSubview:button];
+                [self._overlaySubviews addObject:button];
+            }
+            
+            [self addSubview:self._overlay];
+        }
+    }
 }
 
 - (void)addSticker:(NSString*)sticker
@@ -104,7 +174,7 @@
             iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
             
             [weakSelf._stickers addObject:iv];
-            [weakSelf addSubview:iv];
+            [weakSelf._overlay addSubview:iv];
             
             [weakSelf selectSticker:iv];
         });
@@ -182,8 +252,18 @@
 {
     [self selectSticker:nil];
     
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    image = [image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
+    self._image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    self.isCameraMode = NO;
+}
+
+- (void)onEditCancel:(id)sender
+{
+    self.isCameraMode = YES;
+}
+
+- (void)onEditComplete:(id)sender
+{
+    UIImage *image = [self._image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
     CGFloat horizRatio = image.size.width / self.frame.size.width;
     CGFloat vertRatio = image.size.height / self.frame.size.height;
     
