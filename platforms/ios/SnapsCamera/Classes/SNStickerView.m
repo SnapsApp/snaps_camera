@@ -48,6 +48,15 @@
     return self;
 }
 
+-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if (CGRectContainsPoint(self._close.frame, point)) {
+        return YES;
+    }
+    
+    return [super pointInside:point withEvent:event];
+}
+
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer
 {
     CGPoint translation = [recognizer translationInView:self];
