@@ -7,6 +7,7 @@
 //
 
 #import "UIButton+Snaps.h"
+#import "UIImage+Resize.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
@@ -43,6 +44,31 @@ static const NSString *KEY_HIT_TEST_EDGE_INSETS = @"HitTestEdgeInsets";
     CGRect hitFrame = UIEdgeInsetsInsetRect(relativeFrame, self.hitTestEdgeInsets);
     
     return CGRectContainsPoint(hitFrame, point);
+}
+
++ (UIButton*)getButton:(NSString*)image
+{
+    UIButton *button = [[UIButton alloc] init];
+    [button setImage:[button getIcon:image] forState:UIControlStateNormal];
+    [button setImage:[button getHighlightedIcon:image] forState:UIControlStateHighlighted];
+    button.hitTestEdgeInsets = UIEdgeInsetsMake(-16, -16, -16, -16);
+    return button;
+}
+
+- (UIImage*)getIcon:(NSString*)name
+{
+    UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
+    UIColor *buttonColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+    
+    return [icon maskWithColor:buttonColor];
+}
+
+- (UIImage*)getHighlightedIcon:(NSString*)name
+{
+    UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
+    UIColor *buttonColor = [UIColor colorWithRed:55.0/255.0 green:154.0/255.0 blue:234.0/255.0 alpha:1.0];
+    
+    return [icon maskWithColor:buttonColor];
 }
 
 @end

@@ -12,4 +12,6 @@
 
 @property (nonatomic, assign) UIEdgeInsets hitTestEdgeInsets;
 
++ (UIButton*)getButton:(NSString*)image;
+
 @end

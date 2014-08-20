@@ -25,10 +25,7 @@
         self.image = image;
         self.opaque = NO;
         
-        self._close = [[UIButton alloc] init];
-        [self._close setImage:[self getIcon:@"icon.close"] forState:UIControlStateNormal];
-        [self._close setImage:[self getHighlightedIcon:@"icon.close"] forState:UIControlStateHighlighted];
-        self._close.hitTestEdgeInsets = UIEdgeInsetsMake(-16, -16, -16, -16);
+        self._close = [UIButton getButton:@"icon.close"];
         [self._close addTarget:self action:@selector(removeSticker:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self._close];
         
@@ -95,22 +92,6 @@
 {
     CGFloat s = 32;
     self._close.frame = CGRectMake(self.bounds.size.width - s / 2, -s / 2, s, s);
-}
-
-- (UIImage*)getIcon:(NSString*)name
-{
-    UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
-    UIColor *buttonColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
-    
-    return [icon maskWithColor:buttonColor];
-}
-
-- (UIImage*)getHighlightedIcon:(NSString*)name
-{
-    UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
-    UIColor *buttonColor = [UIColor colorWithRed:55.0/255.0 green:154.0/255.0 blue:234.0/255.0 alpha:1.0];
-    
-    return [icon maskWithColor:buttonColor];
 }
 
 - (void)drawRect:(CGRect)rect

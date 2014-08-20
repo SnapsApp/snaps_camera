@@ -11,6 +11,7 @@
 #import "SNCameraButton.h"
 #import "SNStickerView.h"
 #import "UIImage+Resize.h"
+#import "UIButton+Snaps.h"
 
 #define IS_IPHONE_5  (([[UIScreen mainScreen] bounds].size.height >= 568) ? YES : NO)
 
@@ -56,8 +57,20 @@
         photoButton.center = CGPointMake(frame.size.width / 2, frame.size.height - size / 2 - 8);
         [photoButton addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchUpInside];
         [self._overlay addSubview:photoButton];
-        self._picker.cameraOverlayView = self._overlay;
         
+//        UIButton *swap = [UIButton getButton:@"icon.swap"];
+//        [swap addTarget:self action:@selector(swapCamera:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:swap];
+//        
+//        UIButton *flash = [UIButton getButton:@"icon.flash"];
+//        [flash addTarget:self action:@selector(toggleFlash:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:flash];
+//        
+//        UIButton *gallery = [UIButton getButton:@"icon.gallery"];
+//        [gallery addTarget:self action:@selector(openGallery:) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:gallery];
+
+        self._picker.cameraOverlayView = self._overlay;
         [self addSubview:self._picker.view];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -129,6 +142,16 @@
 - (void)handleTap:(UITapGestureRecognizer*)recognizer
 {
     [self selectSticker:nil];
+}
+
+- (void)swapCamera:(id)sender
+{
+    
+}
+
+- (void)toggleFlash:(id)sender
+{
+    
 }
 
 - (void)takePhoto:(id)sender

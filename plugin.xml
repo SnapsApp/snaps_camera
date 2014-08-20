@@ -44,5 +44,8 @@
     <source-file src="platforms/ios/SnapsCamera/Classes/SNStickerView.m" />
 
     <resource-file src='platforms/ios/SnapsCamera/Images/icon.close.png' />
+    <resource-file src='platforms/ios/SnapsCamera/Images/icon.swap.png' />
+    <resource-file src='platforms/ios/SnapsCamera/Images/icon.gallery.png' />
+    <resource-file src='platforms/ios/SnapsCamera/Images/icon.flash.png' />
   </platform>
 </plugin>
