@@ -55,7 +55,7 @@
         [self._overlay addSubview:self._stickersView];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-        [self._stickersView addGestureRecognizer:tap];
+        [self._overlay addGestureRecognizer:tap];
         
         self.isCameraMode = YES;
     }
@@ -264,8 +264,6 @@
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self selectSticker:nil];
-    
     self._image = [info objectForKey:UIImagePickerControllerOriginalImage];
     self._image = [self._image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
     self.isCameraMode = NO;
@@ -278,6 +276,8 @@
 
 - (void)onEditComplete:(id)sender
 {
+    [self selectSticker:nil];
+    
     UIImage *image = self._image;
     CGFloat horizRatio = image.size.width / self.frame.size.width;
     CGFloat vertRatio  = image.size.height / self.frame.size.height;
