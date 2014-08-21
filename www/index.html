@@ -30,9 +30,11 @@
   <body>
     <div class="app">
       <img id="photoImg" />
-      <button id="openSnapsCameraBtn">Open Snaps Camera</button>
-      <button id="closeSnapsCameraBtn">Close Snaps Camera</button>
+      <button id="openSnapsCameraBtn">Open Camera</button>
+      <button id="closeSnapsCameraBtn">Close Camera</button>
       <button id="addStickerBtn">Add Sticker</button>
+      <button id="hideSnapsCameraBtn">Hide</button>
+      <button id="showSnapsCameraBtn">Show</button>
     </div>
 
     <div id="scripts">
@@ -57,6 +59,22 @@
             console.log("camera closed")
           }, function (err) {
             console.log("error closing camera", err)
+          })
+        }, false)
+
+        document.getElementById("showSnapsCameraBtn").addEventListener("click", function () {
+          SnapsCamera.showCamera(function () {
+            console.log("camera shown")
+          }, function (err) {
+            console.log("error showing camera", err)
+          })
+        }, false)
+
+        document.getElementById("hideSnapsCameraBtn").addEventListener("click", function () {
+          SnapsCamera.hideCamera(function () {
+            console.log("camera hidden")
+          }, function (err) {
+            console.log("error hiding camera", err)
           })
         }, false)
 

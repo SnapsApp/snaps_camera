@@ -97,6 +97,20 @@ body {
   position: fixed;
   display: block;
   left: 1em;
+  bottom: 7em;
+}
+
+#hideSnapsCameraBtn {
+  position: fixed;
+  display: block;
+  right: 1em;
+  bottom: 4em;
+}
+
+#showSnapsCameraBtn {
+  position: fixed;
+  display: block;
+  left: 1em;
   bottom: 4em;
 }
 

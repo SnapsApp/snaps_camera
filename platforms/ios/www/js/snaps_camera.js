@@ -7,12 +7,16 @@ var SnapsCamera = {
     cordova.exec(success, failure, "SnapsCamera", "closeCamera", [])
   },
 
-  addSticker: function (image, success, failure) {
-    cordova.exec(success, failure, "SnapsCamera", "addSticker", [ image ])
+  showCamera: function (success, failure) {
+    cordova.exec(success, failure, "SnapsCamera", "showCamera", [])
   },
 
-  reset: function (success, failure) {
-    cordova.exec(success, failure, "SnapsCamera", "reset", [ ])
+  hideCamera: function (success, failure) {
+    cordova.exec(success, failure, "SnapsCamera", "hideCamera", [])
+  },
+
+  addSticker: function (image, success, failure) {
+    cordova.exec(success, failure, "SnapsCamera", "addSticker", [ image ])
   }
 }
 
