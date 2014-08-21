@@ -99,17 +99,34 @@
                 [self._overlaySubviews addObject:photoButton];
             }
             
-            //        UIButton *swap = [UIButton getButton:@"icon.swap"];
-            //        [swap addTarget:self action:@selector(swapCamera:) forControlEvents:UIControlEventTouchUpInside];
-            //        [self addSubview:swap];
-            //
-            //        UIButton *flash = [UIButton getButton:@"icon.flash"];
-            //        [flash addTarget:self action:@selector(toggleFlash:) forControlEvents:UIControlEventTouchUpInside];
-            //        [self addSubview:flash];
-            //
-            //        UIButton *gallery = [UIButton getButton:@"icon.gallery"];
-            //        [gallery addTarget:self action:@selector(openGallery:) forControlEvents:UIControlEventTouchUpInside];
-            //        [self addSubview:gallery];
+            CGFloat size = 32;
+            CGFloat pad = 16;
+            CGFloat width = self.frame.size.width;
+            CGFloat height = self.frame.size.height;
+            
+            {
+                UIButton *swap = [UIButton getButton:@"icon.swap"];
+                swap.frame = CGRectMake(width - (pad + size), pad, size, size);
+                [swap addTarget:self action:@selector(swapCamera:) forControlEvents:UIControlEventTouchUpInside];
+                [self._overlay addSubview:swap];
+                [self._overlaySubviews addObject:swap];
+            }
+            
+            {
+                UIButton *flash = [UIButton getButton:@"icon.flash"];
+                flash.frame = CGRectMake(width - (pad + size) * 2, pad, size, size);
+                [flash addTarget:self action:@selector(toggleFlash:) forControlEvents:UIControlEventTouchUpInside];
+                [self._overlay addSubview:flash];
+                [self._overlaySubviews addObject:flash];
+            }
+            
+            {
+                UIButton *gallery = [UIButton getButton:@"icon.gallery"];
+                gallery.frame = CGRectMake(pad, height - (pad + size), size, size);
+                [gallery addTarget:self action:@selector(openGallery:) forControlEvents:UIControlEventTouchUpInside];
+                [self._overlay addSubview:gallery];
+                [self._overlaySubviews addObject:gallery];
+            }
             
             self._picker.cameraOverlayView = self._overlay;
             [self addSubview:self._picker.view];
@@ -226,16 +243,16 @@
 
 - (void)swapCamera:(id)sender
 {
-    
-    // TODO
-    
+    UIButton *button = sender;
+    button.selected = !button.selected;
+    self._picker.cameraDevice = (button.selected ? UIImagePickerControllerCameraDeviceFront : UIImagePickerControllerCameraDeviceRear);
 }
 
 - (void)toggleFlash:(id)sender
 {
-    
-    // TODO
-    
+    UIButton *button = sender;
+    button.selected = !button.selected;
+    self._picker.cameraFlashMode = (button.selected ? UIImagePickerControllerCameraFlashModeOn : UIImagePickerControllerCameraFlashModeOff);
 }
 
 - (void)takePhoto:(id)sender
@@ -267,6 +284,8 @@
     self._image = [info objectForKey:UIImagePickerControllerOriginalImage];
     self._image = [self._image imageByScalingAndCroppingForSize:CGSizeMake(640, 640)];
     self.isCameraMode = NO;
+    
+    [self.plugin.viewController dismissViewControllerAnimated:YES completion:^{ }];
 }
 
 - (void)onEditCancel:(id)sender

@@ -14,4 +14,6 @@
 
 + (UIButton*)getButton:(NSString*)image;
 
+- (void)setImage:(NSString*)image;
+
 @end

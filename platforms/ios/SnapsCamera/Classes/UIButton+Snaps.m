@@ -49,21 +49,35 @@ static const NSString *KEY_HIT_TEST_EDGE_INSETS = @"HitTestEdgeInsets";
 + (UIButton*)getButton:(NSString*)image
 {
     UIButton *button = [[UIButton alloc] init];
-    [button setImage:[button getIcon:image] forState:UIControlStateNormal];
-    [button setImage:[button getHighlightedIcon:image] forState:UIControlStateHighlighted];
+    [button setImage:image];
     button.hitTestEdgeInsets = UIEdgeInsetsMake(-16, -16, -16, -16);
     return button;
+}
+
+- (void)setImage:(NSString*)image
+{
+    [self setImage:[self getIcon:image] forState:UIControlStateNormal];
+    [self setImage:[self getHighlightedIcon:image] forState:UIControlStateHighlighted];
+    [self setImage:[self getSelectedIcon:image] forState:UIControlStateSelected];
 }
 
 - (UIImage*)getIcon:(NSString*)name
 {
     UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
-    UIColor *buttonColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+    UIColor *buttonColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8];
     
     return [icon maskWithColor:buttonColor];
 }
 
 - (UIImage*)getHighlightedIcon:(NSString*)name
+{
+    UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
+    UIColor *buttonColor = [UIColor colorWithRed:55.0/255.0 green:154.0/255.0 blue:234.0/255.0 alpha:1.0];
+    
+    return [icon maskWithColor:buttonColor];
+}
+
+- (UIImage*)getSelectedIcon:(NSString*)name
 {
     UIImage *icon = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
     UIColor *buttonColor = [UIColor colorWithRed:55.0/255.0 green:154.0/255.0 blue:234.0/255.0 alpha:1.0];
