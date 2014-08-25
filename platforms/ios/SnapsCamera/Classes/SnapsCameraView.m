@@ -26,11 +26,11 @@
 
 @property (nonatomic, strong) SNStickerView *_selected;
 
-@property (nonatomic) BOOL isCameraMode;
-
 @property (nonatomic, strong) NSMutableArray *_overlaySubviews;
 
 @property (nonatomic, strong) UIImage *_image;
+
+@property (nonatomic) BOOL isCameraMode;
 
 @end
 
@@ -83,6 +83,7 @@
             self._picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
             self._picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
             self._picker.showsCameraControls = NO;
+            self._picker.view.userInteractionEnabled = NO;
             
             self._picker.delegate = self;
             self._picker.view.frame = self.frame;
@@ -128,8 +129,8 @@
                 [self._overlaySubviews addObject:gallery];
             }
             
-            self._picker.cameraOverlayView = self._overlay;
             [self addSubview:self._picker.view];
+            [self addSubview:self._overlay];
         } else {
             if (self._picker) {
                 [self._picker.view removeFromSuperview];
@@ -138,7 +139,6 @@
                 self._picker = nil;
             }
             
-            // TODO: imageview needs to display the resulting image
             UIImageView *iv = [[UIImageView alloc] initWithImage:self._image];
             iv.frame = self.frame;
             [self._overlay addSubview:iv];
