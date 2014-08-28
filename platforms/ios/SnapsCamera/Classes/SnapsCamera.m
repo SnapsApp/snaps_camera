@@ -19,6 +19,7 @@
 @property (strong, nonatomic) CDVInvokedUrlCommand *latestCommand;
 @property (strong, nonatomic) CDVInvokedUrlCommand *mmsCommand;
 @property (readwrite, assign) BOOL hasPendingOperation;
+@property (nonatomic) CGRect cameraViewFrame;
 
 @end
 
@@ -57,7 +58,13 @@
 - (void)hideCamera:(CDVInvokedUrlCommand*)command
 {
     if (self.view) {
-        self.view.hidden = YES;
+        self.cameraViewFrame = self.view.frame;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, 0);
+        } completion:^(BOOL finished) {
+            self.view.hidden = YES;
+        }];
     }
     
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
@@ -67,6 +74,9 @@
 {
     if (self.view) {
         self.view.hidden = NO;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.view.frame = self.cameraViewFrame;
+        }];
     }
     
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
