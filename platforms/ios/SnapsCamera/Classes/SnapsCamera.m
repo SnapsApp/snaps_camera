@@ -9,10 +9,15 @@
 #import "SnapsCamera.h"
 #import "SnapsCameraView.h"
 
-@interface SnapsCamera ()
+#import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+
+@interface SnapsCamera () <MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) SnapsCameraView *view;
 @property (strong, nonatomic) CDVInvokedUrlCommand *latestCommand;
+@property (strong, nonatomic) CDVInvokedUrlCommand *mmsCommand;
 @property (readwrite, assign) BOOL hasPendingOperation;
 
 @end
@@ -75,6 +80,44 @@
     } else {
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
     }
+}
+
+- (void)sendMMS:(CDVInvokedUrlCommand*)command
+{
+    MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+    messageController.messageComposeDelegate = self;
+    
+    NSData *imgData = [NSData dataWithContentsOfFile:[command.arguments objectAtIndex:0]];
+    BOOL didAttachImage = [messageController addAttachmentData:imgData typeIdentifier:(NSString*)kUTTypeJPEG filename:@"snap.jpg"];
+    
+    if (didAttachImage) {
+        self.mmsCommand = command;
+        [self.viewController presentViewController:messageController animated:YES completion:nil];
+    } else {
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:command.callbackId];
+    }
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result
+{
+    switch (result)
+    {
+        case MessageComposeResultCancelled:
+            [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT] callbackId:self.mmsCommand.callbackId];
+            break;
+        case MessageComposeResultSent:
+            [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:self.mmsCommand.callbackId];
+            break;
+        case MessageComposeResultFailed:
+            [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR] callbackId:self.mmsCommand.callbackId];
+            break;
+        default:
+            [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT] callbackId:self.mmsCommand.callbackId];
+            break;
+    }
+    
+    [self.viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)capturedImageWithPath:(NSString*)imagePath

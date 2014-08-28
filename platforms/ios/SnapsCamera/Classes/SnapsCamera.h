@@ -18,6 +18,8 @@
 - (void)showCamera:(CDVInvokedUrlCommand*)command;
 - (void)addSticker:(CDVInvokedUrlCommand*)command;
 
+- (void)sendMMS:(CDVInvokedUrlCommand*)command;
+
 - (void)capturedImageWithPath:(NSString*)imagePath;
 
 @end

@@ -17,6 +17,10 @@ var SnapsCamera = {
 
   addSticker: function (image, success, failure) {
     cordova.exec(success, failure, "SnapsCamera", "addSticker", [ image ])
+  },
+
+  sendMMS: function (image, success, failure) {
+    cordova.exec(success, failure, "SnapsCamera", "sendMMS", [ image ])
   }
 }
 

@@ -30,6 +30,7 @@
 		3D2FD2601992BC0F00C61BFA /* SnapsCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD25F1992BC0F00C61BFA /* SnapsCameraView.m */; };
 		3D2FD2631992C3E800C61BFA /* SNCameraButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2FD2621992C3E800C61BFA /* SNCameraButton.m */; };
 		3D9A32E219992D690038FACB /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D9A32E119992D690038FACB /* UIImage+Resize.m */; };
+		3DAC606E19AF86CD00B8EA2B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAC606D19AF86CD00B8EA2B /* MessageUI.framework */; };
 		3DBF1CB619A2F82000804E57 /* SNStickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF1CB519A2F82000804E57 /* SNStickerView.m */; };
 		3DBF1CB919A2FCCA00804E57 /* icon.close.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DBF1CB819A2FCCA00804E57 /* icon.close.png */; };
 		3DBF1CC019A3004B00804E57 /* UIButton+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DBF1CBF19A3004B00804E57 /* UIButton+Snaps.m */; };
@@ -103,6 +104,7 @@
 		3D2FD2621992C3E800C61BFA /* SNCameraButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNCameraButton.m; sourceTree = "<group>"; };
 		3D9A32E019992D690038FACB /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		3D9A32E119992D690038FACB /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		3DAC606D19AF86CD00B8EA2B /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3DBF1CB419A2F82000804E57 /* SNStickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNStickerView.h; sourceTree = "<group>"; };
 		3DBF1CB519A2F82000804E57 /* SNStickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNStickerView.m; sourceTree = "<group>"; };
 		3DBF1CB819A2FCCA00804E57 /* icon.close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.close.png; path = SnapsCamera/Images/icon.close.png; sourceTree = SOURCE_ROOT; };
@@ -136,6 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DAC606E19AF86CD00B8EA2B /* MessageUI.framework in Frameworks */,
 				5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */,
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -243,6 +246,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3DAC606D19AF86CD00B8EA2B /* MessageUI.framework */,
 				5AEE5B34173C68D80009041E /* CoreLocation.framework */,
 				5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
