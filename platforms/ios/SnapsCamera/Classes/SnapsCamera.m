@@ -27,6 +27,10 @@
 - (void)openCamera:(CDVInvokedUrlCommand*)command
 {
     if (self.hasPendingOperation) {
+        if (self.view) {
+            self.view.hidden = NO;
+        }
+        
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT] callbackId:command.callbackId];
         return;
     }
