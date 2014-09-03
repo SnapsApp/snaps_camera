@@ -13,6 +13,7 @@
 @interface SNStickerView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIButton *_close;
+@property (nonatomic, strong) UIActivityIndicatorView *_loading;
 
 @end
 
@@ -44,7 +45,18 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tap.delegate = self;
         [self addGestureRecognizer:tap];
+        
+        if (!self.image) {
+            self._close.hidden = YES;
+            
+            self._loading = [[UIActivityIndicatorView alloc] init];
+            self._loading.opaque = NO;
+            self._loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+            [self._loading startAnimating];
+            [self addSubview:self._loading];
+        }
     }
+    
     return self;
 }
 
@@ -103,19 +115,32 @@
     self._close.frame = CGRectMake(self.bounds.size.width - s / 2, -s / 2, s, s);
 }
 
+- (void)setImage:(UIImage *)image
+{
+    self->_image = image;
+    
+    if (image) {
+        [self._loading removeFromSuperview];
+    }
+    
+    [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    [self.image drawInRect:self.bounds];
-    
-    BOOL selected = (self.delegate && [self.delegate isSelectedSticker:self]);
-    self._close.hidden = !selected;
-    
-    if (selected) {
-        CGContextSetLineWidth(context, 1.0);
-        CGContextSetRGBStrokeColor(context, 1, 1, 1, 0.5);
-        CGContextStrokeRect(context, self.bounds);
+    if (self.image) {
+        [self.image drawInRect:self.bounds];
+        
+        BOOL selected = (self.delegate && [self.delegate isSelectedSticker:self]);
+        self._close.hidden = !selected;
+        
+        if (selected) {
+            CGContextSetLineWidth(context, 1.0);
+            CGContextSetRGBStrokeColor(context, 1, 1, 1, 0.5);
+            CGContextStrokeRect(context, self.bounds);
+        }
     }
 }
 

@@ -183,6 +183,15 @@
     
     __unsafe_unretained SnapsCameraView *weakSelf = self;
     
+    SNStickerView *iv = [[SNStickerView alloc] initWithImage:nil];
+    iv.delegate = self;
+    iv.contentMode = UIViewContentModeScaleAspectFit;
+    CGFloat W = self.bounds.size.width;
+    CGFloat w = W / 4;
+    iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
+    
+    [self._stickers addObject:iv];
+    [self._stickersView addSubview:iv];
     
     // TODO: use SDWebImageManager for caching
     
@@ -192,16 +201,9 @@
         UIImage *image = [UIImage imageWithData:imageData];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            SNStickerView *iv = [[SNStickerView alloc] initWithImage:image];
-            iv.delegate = self;
-            iv.contentMode = UIViewContentModeScaleAspectFit;
-            CGFloat W = self.bounds.size.width;
-            CGFloat w = W / 4;
+            iv.image = image;
             iv.frame = CGRectMake(0, 0, w, image.size.height * w / image.size.width);
-            iv.center = CGPointMake(W / 2, self.bounds.size.height / 2);
-            
-            [weakSelf._stickers addObject:iv];
-            [weakSelf._stickersView addSubview:iv];
+            iv.center = CGPointMake(W / 2, weakSelf.bounds.size.height / 2);
             
             [weakSelf selectSticker:iv];
         });
@@ -303,57 +305,59 @@
     
     __unsafe_unretained SnapsCameraView *weakSelf = self;
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        CGImageRef imageRef = image.CGImage;
-        
-        // Build a context that's the same dimensions as the new size
-        CGContextRef bitmap = CGBitmapContextCreate(NULL,
-                                                    image.size.width,
-                                                    image.size.height,
-                                                    CGImageGetBitsPerComponent(imageRef),
-                                                    0,
-                                                    CGImageGetColorSpace(imageRef),
-                                                    CGImageGetBitmapInfo(imageRef));
-        
-        CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh);
-        
-        CGContextDrawImage(bitmap, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
-        
-        for (SNStickerView *sticker in weakSelf._stickers) {
-            CGContextSaveGState(bitmap);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            CGImageRef imageRef = image.CGImage;
             
-            // TODO: fix transform issues
-            //        CGContextConcatCTM(bitmap, sticker.transform);
-            //        CGContextDrawImage(bitmap, sticker.frame, sticker.image.CGImage);
+            // Build a context that's the same dimensions as the new size
+            CGContextRef bitmap = CGBitmapContextCreate(NULL,
+                                                        image.size.width,
+                                                        image.size.height,
+                                                        CGImageGetBitsPerComponent(imageRef),
+                                                        0,
+                                                        CGImageGetColorSpace(imageRef),
+                                                        CGImageGetBitmapInfo(imageRef));
             
-            CGContextTranslateCTM(bitmap, sticker.frame.origin.x * horizRatio, sticker.frame.origin.y * vertRatio);
-            CGContextScaleCTM(bitmap, 1, -1);
-            CGContextConcatCTM(bitmap, [[sticker layer] affineTransform]);
-            [[sticker layer] renderInContext:bitmap];
+            CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh);
             
-            CGContextRestoreGState(bitmap);
-        }
-        
-        // Get the resized image from the context and a UIImage
-        CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
-        UIImage *final = [UIImage imageWithCGImage:newImageRef];
-        
-        // Clean up
-        CGContextRelease(bitmap);
-        CGImageRelease(newImageRef);
-        
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
-        NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", currentTime];
-        NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:filename];
-        
-        NSData *imageData = UIImageJPEGRepresentation(final, 0.8);
-        [imageData writeToFile:imagePath atomically:YES];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Tell the plugin class that we're finished processing the image
-            [weakSelf.plugin capturedImageWithPath:imagePath];
+            CGContextDrawImage(bitmap, CGRectMake(0, 0, image.size.width, image.size.height), imageRef);
+            
+            for (SNStickerView *sticker in weakSelf._stickers) {
+                CGContextSaveGState(bitmap);
+                
+                // TODO: fix transform issues
+                //        CGContextConcatCTM(bitmap, sticker.transform);
+                //        CGContextDrawImage(bitmap, sticker.frame, sticker.image.CGImage);
+                
+                CGContextTranslateCTM(bitmap, sticker.frame.origin.x * horizRatio, sticker.frame.origin.y * vertRatio);
+                CGContextScaleCTM(bitmap, 1, -1);
+                CGContextConcatCTM(bitmap, [[sticker layer] affineTransform]);
+                [[sticker layer] renderInContext:bitmap];
+                
+                CGContextRestoreGState(bitmap);
+            }
+            
+            // Get the resized image from the context and a UIImage
+            CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap);
+            UIImage *final = [UIImage imageWithCGImage:newImageRef];
+            
+            // Clean up
+            CGContextRelease(bitmap);
+            CGImageRelease(newImageRef);
+            
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            long currentTime = (long)(NSTimeInterval)([[NSDate date] timeIntervalSince1970]);
+            NSString *filename = [NSString stringWithFormat:@"snap-%ld.jpg", currentTime];
+            NSString *imagePath = [documentsDirectory stringByAppendingPathComponent:filename];
+            
+            NSData *imageData = UIImageJPEGRepresentation(final, 0.8);
+            [imageData writeToFile:imagePath atomically:YES];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Tell the plugin class that we're finished processing the image
+                [weakSelf.plugin capturedImageWithPath:imagePath];
+            });
         });
     });
 }
